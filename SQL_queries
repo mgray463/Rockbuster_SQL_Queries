@@ -1,0 +1,58 @@
+Using an Inner Join
+
+SELECT country,
+       SUM(amount) AS total_payment
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_ID = D.country_ID
+INNER JOIN payment E ON a.customer_id = E.customer_id
+GROUP BY country
+LIMIT 10
+
+Finding descriptive stats
+
+SELECT MIN (rental_rate) AS min_rental_rate,
+		MAX (rental_rate) AS max_rental_rate,
+		AVG (rental_rate) AS avg_rental_rate,
+		MIN (rental_duration) AS min_rental_duration,
+		MAX (rental_duration) AS max_rental_duration,
+		AVG (rental_duration) AS avg_rental_duration
+FROM film
+
+Using subqueries to create new column in data
+
+SELECT B.customer_id,
+		B.first_name,
+		B.last_name,
+		D.city,
+		E.country,
+		SUM(amount) AS amount_paid
+FROM payment A
+INNER JOIN customer B ON A.customer_id = B.customer_id
+INNER JOIN address C ON B.address_id = C.address_id
+INNER JOIN city D ON C.city_id = D.city_id
+INNER JOIN country E ON D.country_id = E.country_id
+WHERE country IN ('India',
+				 	'China',
+				 	'United States',
+				 	'Japan',
+				 	'Mexico',
+				 	'Brazil',
+				 	'Russian Federation',
+				 	'Phillipines',
+				 	'Turkey',
+				 	'Indonesia')
+AND city IN ('Aurora',
+				'Pingxiang',
+				'Sivas',
+				'Dhule (Dhulia)',
+			 	'Kurashiki',
+			 	'Xintai',
+			 	'Adoni',
+			 	'Celaya',
+			 	'Nezahualcyotl',
+			 	'Atlixco')
+GROUP BY 1,2,3,4,5
+ORDER BY amount_paid DESC
+LIMIT 5
